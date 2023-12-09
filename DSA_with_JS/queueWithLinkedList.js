@@ -40,6 +40,7 @@ class Queue {
     if (!this.front) {
       this.rear = null;
     }
+    this.size--;
   }
 
   peek() {
