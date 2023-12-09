@@ -1,76 +1,81 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Code for Stack Using Dynamic Memory Allocation */
-
-int push(int arr[], int *ind, int size)
+/* Code for Stack Using Linked List */
+struct Node
 {
-  if (*ind == size)
+  int data;
+  struct Node *next;
+};
+
+/* Push the element on top in array */
+void push(struct Node *ptr, int *size)
+{
+  struct Node *elem = (struct Node *)malloc(sizeof(struct Node));
+  printf("Enter the element: ");
+  scanf("%d", &elem->data);
+
+  elem->next = NULL;
+
+  while (ptr->next != NULL)
   {
-    printf("\n\n==========> Memory is Overflow <===============\n\n");
-    return 0;
+    printf("next Value %d, %d", ptr->next, ptr->data);
+    ptr = ptr->next;
   }
-
-  int n;
-  printf("Enter the Element: ");
-  scanf("%d", &n);
-
-  arr[*ind] = n;
-  *ind = *ind + 1;
-
-  return 1;
+  ptr->next = elem;
 }
 
-int pop(int arr[], int *ind, int size)
+/* Delete the Element from top */
+void pop(struct Node *ptr)
 {
-  if (*ind == 0)
+}
+
+/* Display the Element of Array */
+void Peep(struct Node *ptr)
+{
+  printf("Elements is : ");
+  while (ptr->next != NULL)
   {
-    printf("\n\n=====> Memory is underflow <=======\n ");
-    return 0;
+    printf("%d ", ptr->data);
+    ptr = ptr->next;
   }
-
-  arr[*ind - 1] = '\0';
-  *ind = *ind - 1;
-
-  return 1;
 }
 
-int display(int arr[], int *ind, int size) {
-  for (int i = 0; i < *ind; i++) {
-    printf("%d ", arr[i]);
-  }
-
-  printf("\n");
-  return 1;
-}
-
-void main()
+int main()
 {
-  int size, num;
+  int size;
   printf("Enter the size of array : ");
   scanf("%d", &size);
 
-  int *ptr = (int *)malloc(size * sizeof(int));
-  int ind = 0;
+  struct Node *head;
+  head = (struct Node *)malloc(sizeof(struct Node));
+  head->next = NULL;
 
   while (1)
   {
-    printf("\n 1. for Push\n 2. for Pop\n 3. for Display\n 4. Quite\n Plz enter given number:");
-    scanf("%d", &num);
-    int flag = 0;
+    printf("\n<========================>\n\n");
+    printf("1. For Push Element\n");
+    printf("2. For Pop Element\n");
+    printf("3. For Peep Element\n");
+    printf("4. For Quite\n");
+    printf("\n<========================>\n\n");
 
-    switch (num)
+    int ch, flag = 0;
+    printf("Plz Enter the above given choice : ");
+    scanf("%d", &ch);
+
+    switch (ch)
     {
     case 1:
-      push(ptr, &ind, size);
+      push(head, &size);
       break;
 
     case 2:
-      pop(ptr, &ind, size);
+      pop(head);
       break;
 
     case 3:
-      display(ptr, &ind, size);
+      Peep(head);
       break;
 
     case 4:
@@ -78,14 +83,16 @@ void main()
       break;
 
     default:
-      printf("\nPlz Enter one of the given number\n\n");
+      printf("\n\n======> Plz Enter 1 or 2 or 3 or 4 Only <=======\n\n");
       break;
     }
 
-    if (flag) {
+    if (flag)
+    {
       break;
     }
   }
 
-  free(ptr);
+  free(head);
+  return 0;
 }
