@@ -37,9 +37,10 @@ class DoublyLinkedList {
   prepend(newNode) {
     if (!this.head) {
       this.head = newNode;
-      this.prev = newNode;
+      this.tail = newNode;
     } else {
       newNode.next = this.head;
+      this.head.prev = newNode;
       this.head = newNode;
     }
   }
@@ -50,23 +51,53 @@ class DoublyLinkedList {
       this.tail = newNode;
     } else {
       newNode.prev = this.tail;
+      this.tail.next = newNode;
       this.tail = newNode;
     }
   }
 
   insertAt(data, index) {
-    if (index < 0 || index > this.size) {
+    if (index < 0 || index > this.size + 1) {
       console.log(`Invalid Index ${index}`);
       return;
     }
 
     const newNode = new Node(data);
-    if (index == 0) {
-      prepend(newNode);
-    } else if (index == this.size) {
-      append(newNode);
+    if (index == 1) {
+      this.prepend(newNode);
+    } else if (index == this.size + 1) {
+      this.append(newNode);
     } else {
-      
+      if (index > this.size / 2) {
+        let current = this.tail;
+        let size = this.size;
+
+        while (size > index) {
+          current = current.prev;
+          size--;
+        }
+
+        newNode.prev = current.prev;
+        newNode.next = current;
+        current = current.prev;
+        current.next = newNode;
+      } else {
+        let current = this.head;
+        let size = 1;
+
+        while (size < index) {
+          current = current.next;
+          size++;
+        }
+
+        console.log({ DK: current });
+        newNode.prev = current.prev;
+        newNode.next = current;
+        current.prev = newNode;
+        current = current.prev;
+        console.log({ DK1: current });
+        current.next = newNode;
+      }
     }
 
     this.size++;
@@ -79,6 +110,7 @@ class DoublyLinkedList {
     let current = this.head;
     while (current) {
       console.log(current.data);
+      // console.log({ current });
       current = current.next;
     }
   }
@@ -97,9 +129,12 @@ class DoublyLinkedList {
 
 const newObj = new DoublyLinkedList();
 newObj.addData(1);
-newObj.addData(11);
-newObj.addData(121);
-newObj.addData(61);
-newObj.addData(17);
+newObj.addData(2);
+newObj.addData(3);
+newObj.addData(4);
+newObj.addData(5);
+newObj.insertAt(7, 2);
+// newObj.insertAt(321, 2);
+
 newObj.showDataH2T();
 newObj.showDataT2H();
